@@ -14,7 +14,7 @@
     "planningWeeks": 8,
     "firstWeekStart": "2026-10-19",
     "rotationOffset": 0,
-    "lastUpdated": "2026-10-19T10:52:01.605Z",
+    "lastUpdated": "2026-10-19T11:28:32.862Z",
     "parkingBays": [
       "A",
       "B"
@@ -46,7 +46,7 @@
       "id": "employee_004",
       "name": "Caroline",
       "rotationOrder": 4,
-      "active": true,
+      "active": false,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
@@ -109,6 +109,11 @@
       "id": "change_mvf4x2mn_i7580",
       "timestamp": "2026-10-19T10:51:56.687Z",
       "description": "Renamed employee: Employee F → Anthony"
+    },
+    {
+      "id": "change_mvf68281_gzzs3",
+      "timestamp": "2026-10-19T11:28:28.993Z",
+      "description": "Deactivated employee: Caroline"
     }
   ],
   "_fieldGuide": {
