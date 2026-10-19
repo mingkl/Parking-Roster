@@ -14,47 +14,51 @@
     "planningWeeks": 8,
     "firstWeekStart": "2026-10-19",
     "rotationOffset": 0,
-    "lastUpdated": ""
+    "lastUpdated": "2026-10-19T10:52:01.605Z",
+    "parkingBays": [
+      "A",
+      "B"
+    ]
   },
   "employees": [
     {
       "id": "employee_001",
-      "name": "Employee A",
+      "name": "Mingming",
       "rotationOrder": 1,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
       "id": "employee_002",
-      "name": "Employee B",
+      "name": "Lucy",
       "rotationOrder": 2,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
       "id": "employee_003",
-      "name": "Employee C",
+      "name": "Daniel",
       "rotationOrder": 3,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
       "id": "employee_004",
-      "name": "Employee D",
+      "name": "Caroline",
       "rotationOrder": 4,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
       "id": "employee_005",
-      "name": "Employee E",
+      "name": "Phillipe",
       "rotationOrder": 5,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
       "id": "employee_006",
-      "name": "Employee F",
+      "name": "Anthony",
       "rotationOrder": 6,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
@@ -65,7 +69,48 @@
   "officeClosures": [],
   "manualOverrides": [],
   "weeklyAssignments": [],
-  "changeLog": [],
+  "changeLog": [
+    {
+      "id": "change_mvf4vlqs_4kmod",
+      "timestamp": "2026-10-19T10:50:48.148Z",
+      "description": "Added annual leave"
+    },
+    {
+      "id": "change_mvf4vyfv_bldrv",
+      "timestamp": "2026-10-19T10:51:04.603Z",
+      "description": "Deleted annual leave"
+    },
+    {
+      "id": "change_mvf4w1qf_12si8",
+      "timestamp": "2026-10-19T10:51:08.871Z",
+      "description": "Renamed employee: Employee A → Mingming"
+    },
+    {
+      "id": "change_mvf4w5yk_ujoex",
+      "timestamp": "2026-10-19T10:51:14.348Z",
+      "description": "Renamed employee: Employee B → Lucy"
+    },
+    {
+      "id": "change_mvf4wo50_lje2p",
+      "timestamp": "2026-10-19T10:51:37.908Z",
+      "description": "Renamed employee: Employee C → Daniel"
+    },
+    {
+      "id": "change_mvf4wrxh_eixro",
+      "timestamp": "2026-10-19T10:51:42.821Z",
+      "description": "Renamed employee: Employee D → Caroline"
+    },
+    {
+      "id": "change_mvf4wwi9_e40im",
+      "timestamp": "2026-10-19T10:51:48.753Z",
+      "description": "Renamed employee: Employee E → Phillipe"
+    },
+    {
+      "id": "change_mvf4x2mn_i7580",
+      "timestamp": "2026-10-19T10:51:56.687Z",
+      "description": "Renamed employee: Employee F → Anthony"
+    }
+  ],
   "_fieldGuide": {
     "settings": "全局轮换和显示设置；详见 DATA_GUIDE.md。",
     "employees": "员工名单与固定轮换顺序；新员工加入末尾。",
