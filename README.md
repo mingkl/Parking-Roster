@@ -1,6 +1,6 @@
 # Parking Roster
 
-A static weekly parking allocation site for two shared parking permits, with a fixed employee rotation, annual leave and office closure handling.
+A static weekly parking allocation site for two shared parking permits, with a fixed employee rotation, short/long annual leave handling and office closure pauses.
 
 ## Files
 - `index.html` — website
