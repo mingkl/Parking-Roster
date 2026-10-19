@@ -19,47 +19,47 @@
     "firstWeekStart": "2026-10-19",
     "rotationOffset": 0,
     "startingBayDirection": "AB",
-    "lastUpdated": ""
+    "lastUpdated": "2026-10-19T10:04:35.929Z"
   },
   "employees": [
     {
       "id": "employee_001",
-      "name": "Employee A",
+      "name": "Mingming",
       "rotationOrder": 1,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
       "id": "employee_002",
-      "name": "Employee B",
+      "name": "Lucy",
       "rotationOrder": 2,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
       "id": "employee_003",
-      "name": "Employee C",
+      "name": "Daniel",
       "rotationOrder": 3,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
       "id": "employee_004",
-      "name": "Employee D",
+      "name": "Caroline",
       "rotationOrder": 4,
-      "active": true,
+      "active": false,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
       "id": "employee_005",
-      "name": "Employee E",
+      "name": "Phillipe",
       "rotationOrder": 5,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
     },
     {
       "id": "employee_006",
-      "name": "Employee F",
+      "name": "Anthony",
       "rotationOrder": 6,
       "active": true,
       "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
@@ -70,7 +70,53 @@
   "officeClosures": [],
   "manualOverrides": [],
   "weeklyAssignments": [],
-  "changeLog": [],
+  "changeLog": [
+    {
+      "id": "change_mvf36d4w_n95rq",
+      "timestamp": "2026-10-19T10:03:10.976Z",
+      "description": "Renamed employee: Employee A → Mingming"
+    },
+    {
+      "id": "change_mvf36gr7_rxrra",
+      "timestamp": "2026-10-19T10:03:15.667Z",
+      "description": "Renamed employee: Employee B → Lucy"
+    },
+    {
+      "id": "change_mvf379bz_gashp",
+      "timestamp": "2026-10-19T10:03:52.703Z",
+      "description": "Renamed employee: Employee C → Caroline"
+    },
+    {
+      "id": "change_mvf37fs7_06r7g",
+      "timestamp": "2026-10-19T10:04:01.063Z",
+      "description": "Renamed employee: Employee D → Daniel"
+    },
+    {
+      "id": "change_mvf37k60_nxsp4",
+      "timestamp": "2026-10-19T10:04:06.744Z",
+      "description": "Renamed employee: Caroline → Daniel"
+    },
+    {
+      "id": "change_mvf37onm_g7zz3",
+      "timestamp": "2026-10-19T10:04:12.562Z",
+      "description": "Renamed employee: Daniel → Caroline"
+    },
+    {
+      "id": "change_mvf37uwa_tu7x4",
+      "timestamp": "2026-10-19T10:04:20.650Z",
+      "description": "Renamed employee: Employee E → Phillipe"
+    },
+    {
+      "id": "change_mvf37ybt_kmwyc",
+      "timestamp": "2026-10-19T10:04:25.097Z",
+      "description": "Renamed employee: Employee F → Anthony"
+    },
+    {
+      "id": "change_mvf3817r_bdxgv",
+      "timestamp": "2026-10-19T10:04:28.839Z",
+      "description": "Deactivated employee: Caroline"
+    }
+  ],
   "_fieldGuide": {
     "settings": "全局轮换和显示设置；详见 DATA_GUIDE.md。",
     "employees": "员工名单与固定轮换顺序；新员工加入末尾。",
