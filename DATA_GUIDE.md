@@ -1,140 +1,34 @@
-# Parking Roster 数据文件说明
+# Data Guide
 
-本文件说明 `data.json` 中各字段的用途。`data.json` 必须保持标准 JSON 格式，不能直接加入 `//` 或 `/* */` 注释，否则网页可能无法解析。为此，字段说明集中写在本文件中；JSON 内的 `_description` 是普通字段，仅供说明，不影响排班算法。
+`data.json` is the shared source of truth for the parking roster. Keep valid JSON syntax; JSON does not support comments, so use this guide for field explanations.
 
-## 重要使用方式
+## `settings`
+- `weekStartsOn`: first day of the roster week (`Monday`).
+- `workingDays`: working days included in the roster.
+- `parkingBays`: parking bay labels, normally `A` and `B`.
+- `planningWeeks`: number of weeks shown in the schedule.
+- `firstWeekStart`: fixed Monday anchor for rotation. Keep this stable to prevent the rotation restarting every week.
+- `rotationOffset`: optional starting position in the employee queue.
+- `startingBayDirection`: which employee in each weekly pair starts in Bay A (`AB` or `BA`).
+- `lastUpdated`: timestamp of the last saved update.
 
-- 网页读取与 `index.html` 放在同一目录的 `data.json`。
-- 这是 GitHub Pages 静态方案：网页中的修改不会自动写回 GitHub。
-- 管理员在网页里修改后，进入“数据管理”下载新的 `data.json`，再上传到 GitHub 仓库并覆盖旧文件。
-- 其他员工刷新网页后读取已发布的数据。
-- 如果仓库公开，任何人都可能查看 JSON。不要存储私人年假原因、家庭情况、联系电话或其他敏感信息。
-- 修改前建议下载一份旧 `data.json` 作为备份。
+## `employees`
+Each employee has a stable `id`, display `name`, numeric `rotationOrder`, and `active` flag. Set `active` to `false` to deactivate an employee without deleting their record.
 
-## 顶层字段
+## `leavePeriods`
+Annual leave records. Each record uses `employeeId`, `startDate`, `endDate`, and an optional non-sensitive `note`. Only the affected dates are skipped; the fixed rotation queue is not changed.
 
-| 字段 | 类型 | 作用 |
-|---|---|---|
-| `_description` | 字符串 | 数据文件用途和隐私提醒 |
-| `schemaVersion` | 数字 | 数据结构版本；升级结构时使用 |
-| `settings` | 对象 | 全局排班设置 |
-| `employees` | 数组 | 员工名单及固定轮换顺序 |
-| `leavePeriods` | 数组 | 个人年假日期范围 |
-| `availabilityPeriods` | 数组 | 暂时不需要停车位的日期范围 |
-| `officeClosures` | 数组 | 整个办公室关闭的日期范围 |
-| `manualOverrides` | 数组 | 特定日期的人工分配覆盖规则 |
-| `weeklyAssignments` | 数组 | 可用于保存/导入已确认的周排班快照；当前版本的展示主要按规则即时计算 |
-| `changeLog` | 数组 | 记录网页内执行的修改操作 |
+## `availabilityPeriods`
+Temporary unavailability records. Each record uses `employeeId`, `startDate`, optional `endDate`, and an ID. If `endDate` is `null`, the unavailability continues until the record is removed or updated.
 
-## `settings`：全局设置
+## `officeClosures`
+Office-wide closure periods. Each record has `startDate`, `endDate`, and an optional `note`. During a full closed week the rotation does not advance; the schedule resumes after reopening.
 
-| 字段 | 作用 | 修改注意事项 |
-|---|---|---|
-| `_description` | 设置说明 | 仅说明文字 |
-| `weekStartsOn` | 每周起始日 | 当前应为 `Monday` |
-| `workingDays` | 工作日 | 当前周一至周五 |
-| `parkingBays` | 停车位名称 | 默认 `A` 和 `B` |
-| `planningWeeks` | 未来展示周数 | 当前为 8 |
-| `firstWeekStart` | 轮换计算锚点周的周一日期 | 留空时网页使用当前周的周一；修改会影响未来轮换计算 |
-| `rotationOffset` | 初始队列偏移量 | 通常保持 0；不要随意修改 |
-| `startingBayDirection` | 锚点周的停车位方向 | `AB` 表示本周主要轮换第 1 人对应 A、第 2 人对应 B；下周交换 |
-| `lastUpdated` | 最近一次网页内修改的时间戳 | 自动更新 |
+## Other fields
+- `manualOverrides`: optional day-specific bay assignments managed in the JSON.
+- `weeklyAssignments`: reserved for saved weekly assignments/history.
+- `changeLog`: records changes made through the page.
+- `_description`: explanatory metadata included in this starter JSON.
 
-## `employees`：员工名单
-
-每个员工对象包含：
-
-| 字段 | 作用 | 修改注意事项 |
-|---|---|---|
-| `id` | 稳定且唯一的员工 ID | 不要重复；改名时不要改变 ID |
-| `name` | 网页显示的员工姓名 | 可修改；避免填写不必要的个人信息 |
-| `rotationOrder` | 固定轮换队列中的顺序 | 数值越小越靠前；调整顺序会影响未来排班 |
-| `active` | 是否参与未来轮换 | `false` 表示停用；不要直接删除有历史记录的员工 |
-
-新增员工时建议分配新的唯一 `id`，并将 `rotationOrder` 设为当前最大顺序号加 1。
-
-## `leavePeriods`：年假
-
-每条记录字段：
-
-- `id`：年假记录唯一 ID。
-- `employeeId`：对应 `employees[].id`。
-- `startDate`：年假第一天，格式 `YYYY-MM-DD`，包含当天。
-- `endDate`：年假最后一天，格式 `YYYY-MM-DD`，包含当天。
-- `note`：可选简短备注。公开仓库中请勿填写私人或敏感原因。
-
-年假只影响该日期范围内的工作日。它不会删除员工，也不会改变固定轮换队列。
-
-## `availabilityPeriods`：临时暂停
-
-字段与年假类似：
-
-- `id`：暂停记录唯一 ID。
-- `employeeId`：员工 ID。
-- `startDate`：暂停开始日，包含当天。
-- `endDate`：暂停结束日，包含当天；`null` 表示持续暂停，直到删除该记录或手动设置结束日期。
-
-暂停仅影响对应日期的分配，不改变固定队列。
-
-## `officeClosures`：办公室关闭
-
-字段：
-
-- `id`：关闭记录唯一 ID。
-- `startDate`：办公室关闭开始日，包含当天。
-- `endDate`：办公室关闭结束日，包含当天。
-- `note`：可选说明，例如 `Christmas office closure`；不要加入私人信息。
-
-办公室关闭期间不安排停车位，也不安排替补。该期间不会消耗正常轮换机会。重新开放后继续原有轮换进度。
-
-## `manualOverrides`：人工覆盖
-
-每条记录可包含：
-
-- `id`：覆盖记录 ID。
-- `date`：具体日期，格式 `YYYY-MM-DD`。
-- `A`：该日 A 位指定员工 ID；`null` 表示明确不分配。
-- `B`：该日 B 位指定员工 ID；`null` 表示明确不分配。
-- `note`：覆盖原因，建议使用简短、非敏感的工作说明。
-
-只有在确实需要人工覆盖某个日期时才使用。不要让同一员工在同一天同时占用 A 和 B。
-
-## `weeklyAssignments`：周排班快照
-
-预留用于保存已经确认的周排班快照。当前网页会根据员工队列、年假、暂停和办公室关闭即时计算显示结果。若未来要增加“锁定已公布排班”的功能，可把已确认的每日安排保存到这里。
-
-## `changeLog`：修改记录
-
-网页每次修改时添加：
-
-- `id`：日志记录 ID。
-- `timestamp`：ISO 时间戳。
-- `description`：修改内容的简要说明。
-
-当前为简易审计记录，不应把它视为具备严格身份认证的安全审计日志，因为该网页没有登录系统。
-
-## 日期和排班规则
-
-1. 周一至周五是正常工作日。
-2. 每周从固定员工队列选出两名主要使用者，正常轮换每周向前推进两个位置。
-3. 每周交替 A/B 方向。
-4. 个人年假和临时暂停只影响实际日期；当天补位不改变固定队列，也不抵扣替补员工未来的正常轮换机会。
-5. 办公室关闭期间，整个轮换暂停；关闭期间不推进轮换。
-6. 关闭日期、年假日期和暂停日期均采用包含开始日和结束日的日期范围。
-7. 如果可用员工不足，网页显示“未分配”，不会重复安排同一员工。
-8. 当前版本使用静态 GitHub 文件发布数据；网页修改后必须下载 JSON 并上传到 GitHub，才能让所有人看到修改。
-
-## 发布更新步骤
-
-1. 进入网页的“数据管理”页面。
-2. 下载 `data.json`。
-3. 保留旧版本备份。
-4. 打开 GitHub 仓库，上传新文件并覆盖原 `data.json`。
-5. 等待 GitHub Pages 更新，然后重新打开网页验证。
-6. 检查当前周、未来 8 周、年假和办公室关闭日期是否正确。
-
-## 常见问题
-
-- **为什么修改后同事看不到？** 修改只在当前浏览器内存中；需要下载 JSON 并上传到 GitHub。
-- **为什么直接双击 `index.html` 可能读不到 JSON？** 浏览器可能阻止本地文件读取；建议通过 GitHub Pages 网址使用。
-- **能否在 JSON 里写 `// 注释`？** 不能。请在本说明文件里记录字段用途，JSON 中的 `_description` 只是普通数据字段。
+## Privacy
+Do not store private leave reasons or other sensitive personal information in a public repository. Anyone can view files in a public GitHub repository.
