@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#183b56">
+<title>Parking Roster｜停车位安排</title>
+<style>
+:root{--ink:#183044;--muted:#617386;--line:#dce4eb;--bg:#f3f6f9;--card:#fff;--brand:#235b7b;--brand2:#e7f1f7;--good:#e8f5ec;--warn:#fff4dc;--bad:#fdeceb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:10px 14px}button.primary{background:var(--brand);color:white;border-color:var(--brand)}button.danger{color:#a52828;border-color:#e7baba}button:disabled{opacity:.5;cursor:not-allowed}input,select,textarea{width:100%;border:1px solid #cbd6df;border-radius:9px;padding:10px;background:#fff;color:var(--ink)}label{display:block;font-size:.9rem;font-weight:650;margin-bottom:5px}.wrap{max-width:1120px;margin:auto;padding:18px}.top{background:var(--brand);color:white;padding:22px 0}.topinner{max-width:1120px;margin:auto;padding:0 18px;display:flex;justify-content:space-between;gap:16px;align-items:center}.top h1{font-size:1.55rem;margin:0}.top p{margin:4px 0 0;color:#e1edf4;font-size:.92rem}.status{font-size:.8rem;background:#ffffff22;border:1px solid #ffffff55;border-radius:999px;padding:6px 10px;white-space:nowrap}.tabs{display:flex;gap:8px;overflow:auto;padding:14px 0}.tabs button{white-space:nowrap}.tabs button.active{background:var(--brand2);border-color:#8fb6cb;color:var(--brand);font-weight:700}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:17px;margin-bottom:14px;box-shadow:0 2px 8px #18304408}.card h2{margin:0 0 12px;font-size:1.15rem}.sub{color:var(--muted);font-size:.9rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field{margin-bottom:12px}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.between{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.bay{border:1px solid var(--line);border-radius:13px;padding:14px;background:#fbfdff}.bayhead{font-weight:750;display:flex;justify-content:space-between;margin-bottom:8px}.person{font-size:1.15rem;font-weight:750}.pill{display:inline-block;border-radius:999px;padding:3px 8px;background:#eef2f5;color:#4c6173;font-size:.78rem;margin:2px}.pill.good{background:var(--good)}.pill.warn{background:var(--warn)}.pill.bad{background:var(--bad)}.daygrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.day{border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}.day .date{font-size:.78rem;color:var(--muted)}.day strong{display:block;overflow-wrap:anywhere}.day .slot{margin-top:9px}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:560px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.83rem;background:#f8fafc}.actions{display:flex;gap:8px;flex-wrap:wrap}.notice{border-radius:12px;padding:12px 14px;background:var(--brand2);margin-bottom:14px}.notice.warn{background:var(--warn)}.notice.bad{background:var(--bad)}.hidden{display:none!important}.weeknav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.weeknav h2{margin:0}.section-title{margin:8px 0 12px}.small{font-size:.82rem}.listitem{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}.empty{color:var(--muted);padding:18px;text-align:center}.footer{color:var(--muted);font-size:.82rem;text-align:center;padding:18px 0 28px}.badge{font-size:.8rem;padding:4px 8px;border-radius:7px;background:#eef2f5}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.hr{height:1px;background:var(--line);margin:14px 0}.help{font-size:.84rem;color:var(--muted);margin-top:4px}.inlinecheck{display:flex;gap:8px;align-items:center}.inlinecheck input{width:auto}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.85rem;overflow-wrap:anywhere}
+@media(max-width:700px){.wrap{padding:12px}.topinner{align-items:flex-start;flex-direction:column}.grid,.grid3,.formgrid{grid-template-columns:1fr}.daygrid{grid-template-columns:1fr}.day{display:grid;grid-template-columns:1fr 1fr;gap:8px}.dayhead{grid-column:1/-1}.day .slot{margin-top:0}.top h1{font-size:1.35rem}.card{padding:14px}.weeknav h2{font-size:1rem}}
+</style>
+</head>
+<body>
+<header class="top"><div class="topinner"><div><h1>Parking Roster</h1><p>员工停车位轮换安排 · 周一至周五</p></div><span class="status" id="dataStatus">正在读取排班数据…</span></div></header>
+<main class="wrap">
+  <div id="globalNotice"></div>
+  <nav class="tabs" aria-label="主导航">
+    <button class="active" data-tab="week">本周安排</button>
+    <button data-tab="future">未来 8 周</button>
+    <button data-tab="employees">员工名单</button>
+    <button data-tab="leave">年假与暂停</button>
+    <button data-tab="closure">办公室关闭</button>
+    <button data-tab="admin">数据管理</button>
+  </nav>
+  <section id="view-week"></section>
+  <section id="view-future" class="hidden"></section>
+  <section id="view-employees" class="hidden"></section>
+  <section id="view-leave" class="hidden"></section>
+  <section id="view-closure" class="hidden"></section>
+  <section id="view-admin" class="hidden"></section>
+  <div class="footer">数据来源于 GitHub 上发布的 data.json。此版本为静态网页：修改后需要导出 JSON 并更新 GitHub，其他人才能看到最新版本。</div>
+</main>
+<script>
+const DAY_NAMES = ["周日","周一","周二","周三","周四","周五","周六"];
+const WORKDAY = [1,2,3,4,5];
+const $ = (s,root=document)=>root.querySelector(s);
+const $$ = (s,root=document)=>[...root.querySelectorAll(s)];
+let data = null, sourceError = "", selectedWeek = null, dirty = false;
+const today = new Date();
+const todayISO = localISO(today);
+function localISO(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function parseDate(s){if(!s)return null;const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d,12,0,0);}
+function addDays(s,n){const d=parseDate(s);d.setDate(d.getDate()+n);return localISO(d);}
+function mondayOf(s){const d=parseDate(s);const dow=d.getDay();d.setDate(d.getDate()-(dow===0?6:dow-1));return localISO(d);}
+function fmt(s,opts={day:"numeric",month:"short"}){const d=parseDate(s);return d?new Intl.DateTimeFormat("en-AU",opts).format(d):s;}
+function weekRange(s){return `${fmt(s)} – ${fmt(addDays(s,4))}`;}
+function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function uid(prefix="id"){return prefix+"_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7);}
+function ensureShape(d){
+  d.schemaVersion ||= 1;
+  d.settings ||= {}; d.settings.workingDays ||= ["Monday","Tuesday","Wednesday","Thursday","Friday"];
+  d.settings.parkingBays ||= ["A","B"]; d.settings.planningWeeks ||= 8; d.settings.rotationOffset ||= 0;
+  d.employees ||= []; d.leavePeriods ||= []; d.availabilityPeriods ||= []; d.officeClosures ||= [];
+  d.manualOverrides ||= []; d.weeklyAssignments ||= []; d.changeLog ||= [];
+  return d;
+}
+async function loadData(){
+  try{
+    const r=await fetch("./data.json?v="+Date.now(),{cache:"no-store"});
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    data=ensureShape(await r.json());
+    $("#dataStatus").textContent="已读取共享数据";
+    renderAll();
+  }catch(e){
+    sourceError=String(e);
+    data=ensureShape({settings:{planningWeeks:8,parkingBays:["A","B"],workingDays:["Monday","Tuesday","Wednesday","Thursday","Friday"],rotationOffset:0},employees:[],leavePeriods:[],availabilityPeriods:[],officeClosures:[],manualOverrides:[],weeklyAssignments:[],changeLog:[]});
+    $("#dataStatus").textContent="数据文件未读取";
+    $("#globalNotice").innerHTML=`<div class="notice warn"><strong>尚未读取到 data.json。</strong><br>如果你直接双击 index.html 打开，浏览器可能会阻止读取本地 JSON。请先把整个文件夹上传到 GitHub Pages；也可以在“数据管理”中导入 data.json。</div>`;
+    renderAll();
+  }
+}
+function activeEmployees(){return data.employees.filter(e=>e.active!==false).sort((a,b)=>(a.rotationOrder||999)-(b.rotationOrder||999));}
+function inRange(date,start,end){return !!start && date>=start && date<= (end||start);}
+function isOfficeClosed(date){return data.officeClosures.some(p=>inRange(date,p.startDate,p.endDate));}
+function unavailable(e,date){
+  if(e.active===false)return true;
+  if(data.leavePeriods.some(p=>p.employeeId===e.id&&inRange(date,p.startDate,p.endDate)))return true;
+  if(data.availabilityPeriods.some(p=>p.employeeId===e.id&&inRange(date,p.startDate,p.endDate)))return true;
+  return false;
+}
+function closureFor(date){return data.officeClosures.find(p=>inRange(date,p.startDate,p.endDate));}
+function weekHasAnyOpenWorkday(weekStart){
+  return [0,1,2,3,4].some(i=>!isOfficeClosed(addDays(weekStart,i)));
+}
+function weekIndex(weekStart){
+  // Count only weeks that have at least one open workday. A fully closed week
+  // does not consume a rotation turn. A partially closed week still uses its
+  // normal pair on the open days in that week.
+  const anchor = data.settings.firstWeekStart || mondayOf(todayISO);
+  const target = mondayOf(weekStart);
+  const delta = Math.round((parseDate(target)-parseDate(anchor))/(7*86400000));
+  if(delta<=0)return 0;
+  let count=0;
+  for(let i=0;i<delta;i++){
+    const ws=addDays(anchor,i*7);
+    if(weekHasAnyOpenWorkday(ws))count++;
+  }
+  return count;
+}
+function getWeeklyPair(weekStart){
+  const people=activeEmployees();
+  if(people.length<2)return [];
+  const idx=weekIndex(weekStart);
+  const offset=Number(data.settings.rotationOffset||0);
+  const start=((offset+idx*2)%people.length+people.length)%people.length;
+  return [people[start%people.length],people[(start+1)%people.length]];
+}
+function bayDirection(weekStart){return weekIndex(weekStart)%2===0?(data.settings.startingBayDirection||"AB"):(data.settings.startingBayDirection||"AB")==="AB"?"BA":"AB";}
+function makeDay(weekStart,dayOffset){
+  const date=addDays(weekStart,dayOffset);
+  if(isOfficeClosed(date))return {date,closed:true,closure:closureFor(date),A:null,B:null,notes:[]};
+  const pair=getWeeklyPair(weekStart);
+  if(pair.length<2)return {date,A:null,B:null,notes:["至少需要两名启用员工"]};
+  const dir=bayDirection(weekStart);
+  const primaryA=dir==="AB"?pair[0]:pair[1], primaryB=dir==="AB"?pair[1]:pair[0];
+  const chosen=[];
+  // First reserve every available primary user, so one primary user is not
+  // accidentally used as the other bay's substitute.
+  let A=primaryA&&!unavailable(primaryA,date)?{employee:primaryA,substitute:false,primary:primaryA}:null;
+  let B=primaryB&&!unavailable(primaryB,date)?{employee:primaryB,substitute:false,primary:primaryB}:null;
+  if(A)chosen.push(A.employee.id);
+  if(B)chosen.push(B.employee.id);
+  function substituteFor(primary){
+    const people=activeEmployees();
+    const startIndex=primary?people.findIndex(x=>x.id===primary.id):-1;
+    for(let step=1;step<=people.length;step++){
+      const candidate=people[(Math.max(startIndex,0)+step)%people.length];
+      if(candidate.id===primary?.id||chosen.includes(candidate.id)||unavailable(candidate,date))continue;
+      chosen.push(candidate.id);
+      return {employee:candidate,substitute:true,primary};
+    }
+    return {employee:null,substitute:false,primary};
+  }
+  if(!A)A=substituteFor(primaryA);
+  if(!B)B=substituteFor(primaryB);
+  const override=data.manualOverrides.find(o=>o.date===date);
+  if(override){
+    for(const bay of ["A","B"]){
+      if(override[bay]===null){if(bay==="A")A={employee:null,substitute:false,primary:primaryA};else B={employee:null,substitute:false,primary:primaryB};}
+      else if(override[bay]){
+        const e=data.employees.find(x=>x.id===override[bay]&&x.active!==false);
+        if(e && !unavailable(e,date) && (bay==="A"?B.employee?.id:B.employee?.id)!==e.id){
+          if(bay==="A")A={employee:e,substitute:e.id!==primaryA?.id,primary:primaryA,manual:true};
+          else B={employee:e,substitute:e.id!==primaryB?.id,primary:primaryB,manual:true};
+        }
+      }
+    }
+  }
+  return {date,closed:false,A,B,notes:[]};
+}
+function makeWeek(weekStart){return {weekStart,days:[0,1,2,3,4].map(i=>makeDay(weekStart,i)),pair:getWeeklyPair(weekStart),direction:bayDirection(weekStart)};}
+function currentWeek(){return selectedWeek||mondayOf(todayISO);}
+function personName(person){return person?.name||"未分配";}
+function renderDay(day){
+  if(day.closed)return `<div class="day"><div class="dayhead"><strong>${DAY_NAMES[parseDate(day.date).getDay()]} ${fmt(day.date)}</strong><span class="pill bad">办公室关闭</span></div><div class="slot sub">${escapeHTML(day.closure?.note||"轮换暂停")}</div></div>`;
+  function slot(bay,x){return `<div class="slot"><span class="pill">${bay}</span><strong>${escapeHTML(personName(x?.employee))}</strong>${x?.substitute?`<span class="pill warn">替补${x.primary?.name?`（原定 ${escapeHTML(x.primary.name)}）`:""}</span>`:""}${x?.manual?'<span class="pill">人工调整</span>':""}</div>`;}
+  return `<div class="day"><div class="dayhead"><strong>${DAY_NAMES[parseDate(day.date).getDay()]} ${fmt(day.date)}</strong></div>${slot("A",day.A)}${slot("B",day.B)}</div>`;
+}
+function renderWeekView(){
+  const start=currentWeek(),w=makeWeek(start);
+  $("#view-week").innerHTML=`<div class="card"><div class="weeknav"><button id="prevWeek">← 上一周</button><div><h2>${escapeHTML(weekRange(start))}</h2><div class="sub">${start===mondayOf(todayISO)?"当前周":"查看其他周"} · 每周方向 ${w.direction}</div></div><button id="nextWeek">下一周 →</button></div><div class="daygrid">${w.days.map(renderDay).join("")}</div><div class="hr"></div><div class="sub">本周主要轮换：${w.pair.map(e=>escapeHTML(e.name)).join("、")||"员工人数不足"}。个人年假或暂停只影响对应工作日；办公室关闭期间整个轮换暂停。</div></div>`;
+  $("#prevWeek").onclick=()=>{selectedWeek=addDays(start,-7);renderWeekView();};
+  $("#nextWeek").onclick=()=>{selectedWeek=addDays(start,7);renderWeekView();};
+}
+function renderFuture(){
+  const start=mondayOf(todayISO);
+  let html=`<div class="card"><h2>未来 8 周</h2><p class="sub">从当前周开始，显示连续 8 周。年假、暂停及办公室关闭均按日期计算。</p></div>`;
+  for(let i=0;i<8;i++){
+    const ws=addDays(start,i*7),w=makeWeek(ws);
+    html+=`<div class="card"><div class="between"><h2>第 ${i+1} 周 · ${escapeHTML(weekRange(ws))}</h2><span class="pill">方向 ${w.direction}</span></div><div class="daygrid">${w.days.map(renderDay).join("")}</div><div class="row" style="margin-top:10px"><span class="sub">主要轮换：${w.pair.map(e=>escapeHTML(e.name)).join("、")||"员工人数不足"}</span><button data-open-week="${ws}">查看本周</button></div></div>`;
+  }
+  $("#view-future").innerHTML=html;
+  $$("[data-open-week]").forEach(b=>b.onclick=()=>{selectedWeek=b.dataset.openWeek;showTab("week");});
+}
+function renderEmployees(){
+  const employees=[...data.employees].sort((a,b)=>(a.rotationOrder||999)-(b.rotationOrder||999));
+  $("#view-employees").innerHTML=`<div class="card"><h2>员工名单</h2><p class="sub">新增员工会加入队列末尾。停用员工保留历史记录。此网页采用静态 GitHub 数据发布方式，修改后需导出 JSON 并上传更新。</p><form id="employeeForm"><div class="formgrid"><div><label>员工姓名</label><input id="empName" required maxlength="80" placeholder="例如 Alex"></div><div><label>加入队列位置</label><input value="自动加入末尾" disabled></div></div><button class="primary" type="submit">添加员工</button></form></div><div class="card"><h2>当前员工与轮换顺序</h2><div class="tablewrap"><table><thead><tr><th>顺序</th><th>姓名</th><th>状态</th><th>操作</th></tr></thead><tbody>${employees.map(e=>`<tr><td>${e.rotationOrder}</td><td>${escapeHTML(e.name)}</td><td>${e.active===false?'<span class="pill bad">已停用</span>':'<span class="pill good">参与轮换</span>'}</td><td><div class="actions"><button data-rename="${e.id}">改名</button><button data-toggle="${e.id}">${e.active===false?"重新启用":"停用"}</button><button data-up="${e.id}" ${e.rotationOrder<=1?"disabled":""}>上移</button><button data-down="${e.id}" ${e.rotationOrder>=employees.length?"disabled":""}>下移</button></div></td></tr>`).join("")}</tbody></table></div></div>`;
+  $("#employeeForm").onsubmit=e=>{e.preventDefault();const name=$("#empName").value.trim();if(!name)return;const max=Math.max(0,...data.employees.map(x=>Number(x.rotationOrder)||0));data.employees.push({id:uid("employee"),name,rotationOrder:max+1,active:true});markDirty("新增员工："+name);renderAll();};
+  $$("[data-rename]").forEach(b=>b.onclick=()=>{const e=data.employees.find(x=>x.id===b.dataset.rename);const n=prompt("请输入新姓名：",e.name);if(n&&n.trim()){const old=e.name;e.name=n.trim();markDirty(`员工改名：${old} → ${e.name}`);renderAll();}});
+  $$("[data-toggle]").forEach(b=>b.onclick=()=>{const e=data.employees.find(x=>x.id===b.dataset.toggle);e.active=e.active===false;markDirty(`${e.active?"重新启用":"停用"}员工：${e.name}`);renderAll();});
+  $$("[data-up],[data-down]").forEach(b=>b.onclick=()=>{const e=data.employees.find(x=>x.id===(b.dataset.up||b.dataset.down));const step=b.dataset.up?-1:1;const other=data.employees.find(x=>x.rotationOrder===e.rotationOrder+step);if(other){[e.rotationOrder,other.rotationOrder]=[other.rotationOrder,e.rotationOrder];markDirty("调整员工轮换顺序");renderAll();}});
+}
+function renderLeave(){
+  const opts=data.employees.map(e=>`<option value="${e.id}">${escapeHTML(e.name)}${e.active===false?"（已停用）":""}</option>`).join("");
+  $("#view-leave").innerHTML=`<div class="card"><h2>登记年假</h2><p class="sub">年假只影响日期范围内的工作日，不改变固定轮换顺序。请勿填写私人原因。</p><form id="leaveForm"><div class="field"><label>员工</label><select id="leaveEmployee" required>${opts}</select></div><div class="formgrid"><div><label>开始日期</label><input id="leaveStart" type="date" required></div><div><label>结束日期</label><input id="leaveEnd" type="date" required></div></div><div class="field"><label>简短备注（可选，不建议写敏感信息）</label><input id="leaveNote" maxlength="120" placeholder="例如 Annual leave"></div><button class="primary" type="submit">添加年假</button></form></div><div class="card"><h2>年假记录</h2>${data.leavePeriods.length?data.leavePeriods.map(p=>`<div class="listitem"><div class="between"><strong>${escapeHTML(data.employees.find(e=>e.id===p.employeeId)?.name||"未知员工")}</strong><button class="danger" data-delete-leave="${p.id}">删除</button></div><div>${fmt(p.startDate,{day:"numeric",month:"short",year:"numeric"})} – ${fmt(p.endDate,{day:"numeric",month:"short",year:"numeric"})}</div>${p.note?`<div class="sub">${escapeHTML(p.note)}</div>`:""}</div>`).join(""):'<div class="empty">暂时没有年假记录。</div>'}</div><div class="card"><h2>临时暂停使用</h2><p class="sub">暂停期间员工不参与当天分配；没有结束日期则持续暂停，直到管理员手动结束或删除记录。</p><form id="pauseForm"><div class="field"><label>员工</label><select id="pauseEmployee" required>${opts}</select></div><div class="formgrid"><div><label>开始日期</label><input id="pauseStart" type="date" required></div><div><label>结束日期（可留空）</label><input id="pauseEnd" type="date"></div></div><button class="primary" type="submit">添加暂停</button></form><div class="hr"></div>${data.availabilityPeriods.length?data.availabilityPeriods.map(p=>`<div class="listitem"><div class="between"><strong>${escapeHTML(data.employees.find(e=>e.id===p.employeeId)?.name||"未知员工")}</strong><button class="danger" data-delete-pause="${p.id}">删除</button></div><div>${p.startDate} – ${p.endDate||"持续暂停"}</div></div>`).join(""):'<div class="empty">暂时没有暂停记录。</div>'}</div>`;
+  $("#leaveForm").onsubmit=e=>{e.preventDefault();const start=$("#leaveStart").value,end=$("#leaveEnd").value;if(end<start){alert("结束日期不能早于开始日期。");return;}data.leavePeriods.push({id:uid("leave"),employeeId:$("#leaveEmployee").value,startDate:start,endDate:end,note:$("#leaveNote").value.trim()});markDirty("新增年假记录");renderAll();};
+  $("#pauseForm").onsubmit=e=>{e.preventDefault();const start=$("#pauseStart").value,end=$("#pauseEnd").value;if(end&&end<start){alert("结束日期不能早于开始日期。");return;}data.availabilityPeriods.push({id:uid("pause"),employeeId:$("#pauseEmployee").value,startDate:start,endDate:end||null});markDirty("新增临时暂停记录");renderAll();};
+  $$("[data-delete-leave]").forEach(b=>b.onclick=()=>{if(confirm("确定删除这条年假记录？")){data.leavePeriods=data.leavePeriods.filter(p=>p.id!==b.dataset.deleteLeave);markDirty("删除年假记录");renderAll();}});
+  $$("[data-delete-pause]").forEach(b=>b.onclick=()=>{if(confirm("确定删除这条暂停记录？")){data.availabilityPeriods=data.availabilityPeriods.filter(p=>p.id!==b.dataset.deletePause);markDirty("删除暂停记录");renderAll();}});
+}
+function renderClosures(){
+  $("#view-closure").innerHTML=`<div class="card"><h2>办公室关闭期间</h2><p class="sub">例如年底休假。关闭期间整个轮换暂停，不分配正常停车位或替补；重新开放后继续原轮换进度。开始和结束日期均包含在内。</p><form id="closureForm"><div class="formgrid"><div><label>关闭开始日期</label><input id="closureStart" type="date" required></div><div><label>关闭结束日期</label><input id="closureEnd" type="date" required></div></div><div class="field"><label>备注（可选）</label><input id="closureNote" maxlength="120" placeholder="例如 Christmas office closure"></div><button class="primary" type="submit">添加关闭期间</button></form></div><div class="card"><h2>已登记的关闭期间</h2>${data.officeClosures.length?data.officeClosures.map(p=>`<div class="listitem"><div class="between"><strong>${p.startDate} – ${p.endDate}</strong><button class="danger" data-delete-closure="${p.id}">删除</button></div>${p.note?`<div class="sub">${escapeHTML(p.note)}</div>`:""}</div>`).join(""):'<div class="empty">尚未登记办公室关闭日期。</div>'}</div>`;
+  $("#closureForm").onsubmit=e=>{e.preventDefault();const start=$("#closureStart").value,end=$("#closureEnd").value;if(end<start){alert("结束日期不能早于开始日期。");return;}data.officeClosures.push({id:uid("closure"),startDate:start,endDate:end,note:$("#closureNote").value.trim()});markDirty("新增办公室关闭期间");renderAll();};
+  $$("[data-delete-closure]").forEach(b=>b.onclick=()=>{if(confirm("确定删除这段办公室关闭期间？")){data.officeClosures=data.officeClosures.filter(p=>p.id!==b.dataset.deleteClosure);markDirty("删除办公室关闭期间");renderAll();}});
+}
+function markDirty(message){
+  dirty=true;data.settings.lastUpdated=new Date().toISOString();
+  data.changeLog.push({id:uid("change"),timestamp:new Date().toISOString(),description:message});
+  $("#dataStatus").textContent="有未发布的修改";
+}
+function renderAdmin(){
+  const json=JSON.stringify(data,null,2);
+  $("#view-admin").innerHTML=`<div class="notice warn"><strong>重要：GitHub 静态网页的修改不会自动写回仓库。</strong><br>你在此网页进行修改后，需要下载新的 data.json，再把它上传到 GitHub 仓库覆盖旧文件。其他员工才能看到更新。此项目不包含登录或密码保护。</div><div class="card"><h2>数据发布</h2><p class="sub">下载最新数据 JSON，然后在 GitHub 仓库中替换 data.json。请不要把私人年假原因或敏感个人信息写入公开仓库。</p><div class="actions"><button class="primary" id="downloadJson">下载 data.json</button><button id="copyJson">复制 JSON 内容</button><button id="reloadJson">重新读取 GitHub 版本</button></div><p id="adminMessage" class="sub"></p></div><div class="card"><h2>导入数据</h2><p class="sub">选择一份有效的 data.json 来载入数据。导入后检查排班，再下载并发布。</p><input id="importFile" type="file" accept=".json,application/json"><div class="actions" style="margin-top:10px"><button id="importJson" class="primary">导入选中的 JSON</button></div></div><div class="card"><h2>数据检查</h2><div id="validation"></div></div><div class="card"><h2>当前数据预览</h2><p class="sub">此处为当前网页内存中的数据，包含尚未发布的修改。</p><textarea class="mono" rows="14" readonly id="jsonPreview"></textarea></div>`;
+  $("#jsonPreview").value=json;
+  $("#downloadJson").onclick=()=>{data.settings.lastUpdated=new Date().toISOString();const blob=new Blob([JSON.stringify(data,null,2)+"\n"],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="data.json";a.click();URL.revokeObjectURL(a.href);$("#adminMessage").textContent="已生成 data.json 下载文件。请将它上传到 GitHub 并覆盖旧文件。";};
+  $("#copyJson").onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(data,null,2));$("#adminMessage").textContent="JSON 已复制。";}catch(e){$("#jsonPreview").focus();$("#jsonPreview").select();$("#adminMessage").textContent="请手动复制文本框中的内容。";}};
+  $("#reloadJson").onclick=()=>{if(confirm("重新读取会丢弃当前尚未下载的修改。确定继续？"))loadData();};
+  $("#importJson").onclick=async()=>{const f=$("#importFile").files[0];if(!f){alert("请先选择 JSON 文件。");return;}try{const parsed=ensureShape(JSON.parse(await f.text()));if(!Array.isArray(parsed.employees))throw new Error("employees 必须是数组");if(!confirm("导入会替换当前网页中的全部数据。确定继续？"))return;data=parsed;markDirty("导入 JSON 数据");renderAll();alert("导入成功。请检查数据后下载并发布。");}catch(e){alert("无法导入 JSON："+e.message);}};
+  const issues=[];
+  if(activeEmployees().length<2)issues.push("至少需要两名启用员工才能分配两个停车位。");
+  const ids=data.employees.map(e=>e.id);if(new Set(ids).size!==ids.length)issues.push("员工 ID 存在重复。");
+  for(const e of data.employees)if(!e.name||!Number.isFinite(Number(e.rotationOrder)))issues.push("有员工缺少姓名或有效的轮换顺序。");
+  for(const p of [...data.leavePeriods,...data.availabilityPeriods,...data.officeClosures])if(p.startDate&&p.endDate&&p.endDate<p.startDate)issues.push("存在结束日期早于开始日期的记录。");
+  $("#validation").innerHTML=issues.length?`<div class="notice warn">${issues.map(escapeHTML).join("<br>")}</div>`:'<div class="notice">基础数据检查通过。发布前仍建议检查未来 8 周排班和日期范围。</div>';
+}
+function showTab(tab){
+  $$("[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  ["week","future","employees","leave","closure","admin"].forEach(t=>$("#view-"+t).classList.toggle("hidden",t!==tab));
+  if(tab==="week")renderWeekView();if(tab==="future")renderFuture();if(tab==="employees")renderEmployees();if(tab==="leave")renderLeave();if(tab==="closure")renderClosures();if(tab==="admin")renderAdmin();
+}
+function renderAll(){
+  if(!data)return;
+  const active=activeEmployees();
+  const notice=[];
+  if(active.length<2)notice.push("至少需要两名启用员工才能正常分配两个停车位。");
+  if(dirty)notice.push("当前有尚未发布的修改。请进入“数据管理”下载 data.json，并上传到 GitHub。");
+  $("#globalNotice").innerHTML=notice.map(n=>`<div class="notice ${dirty?"warn":""}">${escapeHTML(n)}</div>`).join("");
+  const tab=$(".tabs button.active")?.dataset.tab||"week";
+  showTab(tab);
+}
+$$("[data-tab]").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+loadData();
+</script>
+</body>
+</html>

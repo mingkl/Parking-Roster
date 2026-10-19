@@ -1,0 +1,84 @@
+{
+  "_description": "Parking Roster 数据文件。此文件供网页读取；不要在其中写入私人年假原因、联系方式或其他敏感信息。",
+  "schemaVersion": 1,
+  "settings": {
+    "_description": "全局规则：控制工作日、停车位名称、8周预览、轮换锚点和 A/B 起始方向。",
+    "weekStartsOn": "Monday",
+    "workingDays": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "parkingBays": [
+      "A",
+      "B"
+    ],
+    "planningWeeks": 8,
+    "firstWeekStart": "",
+    "rotationOffset": 0,
+    "startingBayDirection": "AB",
+    "lastUpdated": ""
+  },
+  "employees": [
+    {
+      "id": "employee_001",
+      "name": "Employee A",
+      "rotationOrder": 1,
+      "active": true,
+      "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
+    },
+    {
+      "id": "employee_002",
+      "name": "Employee B",
+      "rotationOrder": 2,
+      "active": true,
+      "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
+    },
+    {
+      "id": "employee_003",
+      "name": "Employee C",
+      "rotationOrder": 3,
+      "active": true,
+      "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
+    },
+    {
+      "id": "employee_004",
+      "name": "Employee D",
+      "rotationOrder": 4,
+      "active": true,
+      "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
+    },
+    {
+      "id": "employee_005",
+      "name": "Employee E",
+      "rotationOrder": 5,
+      "active": true,
+      "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
+    },
+    {
+      "id": "employee_006",
+      "name": "Employee F",
+      "rotationOrder": 6,
+      "active": true,
+      "_description": "员工记录：id 是稳定唯一身份；name 是显示姓名；rotationOrder 是固定轮换顺序；active=false 表示停用但保留历史。"
+    }
+  ],
+  "leavePeriods": [],
+  "availabilityPeriods": [],
+  "officeClosures": [],
+  "manualOverrides": [],
+  "weeklyAssignments": [],
+  "changeLog": [],
+  "_fieldGuide": {
+    "settings": "全局轮换和显示设置；详见 DATA_GUIDE.md。",
+    "employees": "员工名单与固定轮换顺序；新员工加入末尾。",
+    "leavePeriods": "个人年假范围；只跳过实际休假工作日。",
+    "availabilityPeriods": "员工暂时不需要停车位的范围；结束日期为 null 表示持续暂停。",
+    "officeClosures": "办公室整体关闭日期范围；关闭期间整个轮换暂停且不消耗轮换机会。",
+    "manualOverrides": "特定日期的人工分配覆盖；谨慎使用。",
+    "weeklyAssignments": "预留的已确认周排班快照数组。",
+    "changeLog": "网页内修改记录；静态版本不代表身份认证审计。"
+  }
+}
