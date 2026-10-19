@@ -1,8 +1,8 @@
 {
   "_description": "Parking Roster 数据文件。此文件供网页读取；不要在其中写入私人年假原因、联系方式或其他敏感信息。",
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "settings": {
-    "_description": "Global settings: Monday-Friday schedule, planning horizon and fixed rotation anchor. Parking permits are not tied to named physical bays.",
+    "_description": "Fixed employee rotation settings. The website assigns two shared parking permits, not named physical bays.",
     "weekStartsOn": "Monday",
     "workingDays": [
       "Monday",
@@ -69,11 +69,11 @@
   "_fieldGuide": {
     "settings": "全局轮换和显示设置；详见 DATA_GUIDE.md。",
     "employees": "员工名单与固定轮换顺序；新员工加入末尾。",
-    "leavePeriods": "Annual leave records: 1-4 weekdays are marked Leave while the employee remains listed; 5+ weekdays cause the employee to be skipped in overlapping roster weeks and replaced from the fixed queue.",
+    "leavePeriods": "Annual leave: assessed separately per Monday-Friday roster week. 1-4 leave weekdays retain the assignment with a Leave label and no substitution; 5 leave weekdays skip the employee for that week.",
     "availabilityPeriods": "员工暂时不需要停车位的范围；结束日期为 null 表示持续暂停。",
     "officeClosures": "Office closure date ranges; fully closed Monday-Friday weeks pause rotation without consuming a turn.",
     "manualOverrides": "特定日期的人工分配覆盖；谨慎使用。",
-    "weeklyAssignments": "Legacy snapshots retained for compatibility; the current website recalculates schedules from rotation rules, leave and closures.",
+    "weeklyAssignments": "Legacy snapshots retained for compatibility; current schedule is recalculated from rotation rules, leave and closures.",
     "changeLog": "网页内修改记录；静态版本不代表身份认证审计。"
   }
 }
