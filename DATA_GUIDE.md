@@ -5,7 +5,7 @@
 ## `settings`
 - `weekStartsOn`: first day of the roster week (`Monday`).
 - `workingDays`: working days included in the roster.
-- `parkingBays`: parking bay labels, normally `A` and `B`.
+- `parkingBays`: parking bay labels, the display does not assign fixed physical parking bays.
 - `planningWeeks`: number of weeks shown in the schedule.
 - `firstWeekStart`: fixed Monday anchor for rotation. Keep this stable to prevent the rotation restarting every week.
 - `rotationOffset`: optional starting position in the employee queue.
