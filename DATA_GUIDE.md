@@ -18,15 +18,12 @@ Each employee has a stable `id`, display `name`, numeric `rotationOrder`, and `a
 ## `leavePeriods`
 Annual leave records. Each record uses `employeeId`, `startDate`, `endDate`, and an optional non-sensitive `note`. Only the affected dates are skipped; the fixed rotation queue is not changed.
 
-## `availabilityPeriods`
-Temporary unavailability records. Each record uses `employeeId`, `startDate`, optional `endDate`, and an ID. If `endDate` is `null`, the unavailability continues until the record is removed or updated.
-
 ## `officeClosures`
 Office-wide closure periods. Each record has `startDate`, `endDate`, and an optional `note`. During a full closed week the rotation does not advance; the schedule resumes after reopening.
 
 ## Other fields
 - `manualOverrides`: optional day-specific bay assignments managed in the JSON.
-- `weeklyAssignments`: reserved for saved weekly assignments/history.
+- `weeklyAssignments`: saved historical week snapshots. Each record stores `weekStart`, `savedAt`, the weekly rotation pair, bay direction, and each weekday's saved Bay A/B assignment (including the employee ID and name at the time). Once a week is saved, the website reads that snapshot instead of recalculating it.
 - `changeLog`: records changes made through the page.
 - `_description`: explanatory metadata included in this starter JSON.
 
